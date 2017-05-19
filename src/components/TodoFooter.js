@@ -1,4 +1,5 @@
 import React from 'react';
+import * as filters from './filters';
 export default class TodoFooter extends React.Component {
     render(){
         return (
@@ -8,9 +9,9 @@ export default class TodoFooter extends React.Component {
                         <div style={{height: 30, lineHeight: '30px'}}>还有件1待办事项</div>
                     </div>
                     <div className="col-xs-6 text-center">
-                        <button className="btn btn-default btn-sm">全部</button>
-                        <button style={{marginLeft: 5}} className="btn btn-warning btn-sm">未完成</button>
-                        <button style={{marginLeft: 5}} className="btn btn-success btn-sm">已完成</button>
+                        <button onClick={()=>this.props.changeFilter(filters.ALL)} className={"btn btn-sm "+(this.props.filter === filters.ALL?'btn-success':'btn-default')}>全部</button>
+                        <button onClick={()=>this.props.changeFilter(filters.ACTIVE)}  style={{marginLeft: 5}} className={"btn btn-sm "+(this.props.filter === filters.ACTIVE?'btn-success':'btn-default')}>未完成</button>
+                        <button onClick={()=>this.props.changeFilter(filters.COMPLETED)}  style={{marginLeft: 5}} className={"btn btn-sm "+(this.props.filter === filters.COMPLETED?'btn-success':'btn-default')}>已完成</button>
                     </div>
                     <div className="col-xs-3 text-right">
                         <button className="btn btn-danger btn-sm">删除已完成的</button>

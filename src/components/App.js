@@ -39,6 +39,9 @@ export default class App extends React.Component {
         this.setState({todos});
     }
 
+    changeFilter=(filter)=>{
+        this.setState({filter});
+    }
     render() {
         let showTodos = this.state.todos.filter(todo => {
             switch (this.state.filter) {
@@ -67,7 +70,7 @@ export default class App extends React.Component {
                         <div className="panel panel-default">
                             <TodoHeader title={this.state.newTodo} addTodo={this.addTodo}/>
                             {main}
-                            <TodoFooter/>
+                            <TodoFooter changeFilter={this.changeFilter} filter={this.state.filter}/>
                         </div>
                     </div>
                 </div>
