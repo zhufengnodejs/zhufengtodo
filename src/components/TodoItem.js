@@ -5,7 +5,7 @@ export default class TodoItem extends React.Component {
         return (
             <li className="list-group-item">
                 <div className="row">
-                    <div className="col-xs-1"><input type="checkbox" checked={todo.completed}/></div>
+                    <div className="col-xs-1"><input type="checkbox" checked={todo.completed} onChange={()=>this.props.toggle(todo.id)}/></div>
                     <div className="col-xs-10"><span>{todo.title}</span></div>
                     <div className="col-xs-1">
                         <button className="btn btn-danger btn-xs" onClick={()=>this.props.delTodo(todo.id)}>X</button>

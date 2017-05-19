@@ -9,17 +9,13 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos: [{
-                id: Date.now(),
-                title: '今天学习React',
-                completed: false
-            }],
+            todos: [],
             filter: filters.ALL, //显示全部的待办事项
             editTodo: null,      //正在编辑中的todo
         };
     }
 
-    addTodo = (title)=>{
+    addTodo = (title) => {
         let todos = this.state.todos;
         todos.push({
             id: Date.now(),
@@ -28,11 +24,21 @@ export default class App extends React.Component {
         });
         this.setState({todos});
     }
-    delTodo = (id)=>{
+    delTodo = (id) => {
         let todos = this.state.todos;
-        todos = this.state.todos.filter(todo => todo.id != id)
+        todos = this.state.todos.filter(todo => todo.id !== id)
         this.setState({todos});
     }
+
+    toggle = (id) => {
+        let todos = this.state.todos;
+        todos = this.state.todos.map(todo => {
+            if (todo.id === id) todo.completed = !todo.completed;
+            return todo;
+        })
+        this.setState({todos});
+    }
+
     render() {
         let showTodos = this.state.todos.filter(todo => {
             switch (this.state.filter) {
@@ -45,7 +51,7 @@ export default class App extends React.Component {
             }
         }, this);
         let todoItems = showTodos.map((todo, index) => (
-            <TodoItem key={index} todo={todo} delTodo={this.delTodo}/>
+            <TodoItem toggle={this.toggle} key={index} todo={todo} delTodo={this.delTodo}/>
         ))
         let main = (
             <div className="panel-body">
