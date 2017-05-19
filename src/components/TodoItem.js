@@ -1,13 +1,14 @@
 import React from 'react';
 export default class TodoItem extends React.Component {
     render(){
+        let todo = this.props.todo;
         return (
             <li className="list-group-item">
                 <div className="row">
-                    <div className="col-xs-1"><input type="checkbox" checked={this.props.todo.completed}/></div>
-                    <div className="col-xs-10"><span>{this.props.todo.title}</span></div>
+                    <div className="col-xs-1"><input type="checkbox" checked={todo.completed}/></div>
+                    <div className="col-xs-10"><span>{todo.title}</span></div>
                     <div className="col-xs-1">
-                        <button className="btn btn-danger btn-xs">X</button>
+                        <button className="btn btn-danger btn-xs" onClick={()=>this.props.delTodo(todo.id)}>X</button>
                     </div>
                 </div>
             </li>

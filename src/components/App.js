@@ -28,6 +28,11 @@ export default class App extends React.Component {
         });
         this.setState({todos});
     }
+    delTodo = (id)=>{
+        let todos = this.state.todos;
+        todos = this.state.todos.filter(todo => todo.id != id)
+        this.setState({todos});
+    }
     render() {
         let showTodos = this.state.todos.filter(todo => {
             switch (this.state.filter) {
@@ -40,7 +45,7 @@ export default class App extends React.Component {
             }
         }, this);
         let todoItems = showTodos.map((todo, index) => (
-            <TodoItem key={index} todo={todo}/>
+            <TodoItem key={index} todo={todo} delTodo={this.delTodo}/>
         ))
         let main = (
             <div className="panel-body">
