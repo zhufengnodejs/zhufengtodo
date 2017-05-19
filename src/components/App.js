@@ -39,11 +39,26 @@ export default class App extends React.Component {
         this.setState({todos});
     }
 
-    changeFilter=(filter)=>{
+    changeFilter = (filter) => {
         this.setState({filter});
     }
+    clearCompleted = ()=>{
+        let todos = this.state.todos;
+        todos = this.state.todos.filter(todo => !todo.completed);
+        this.setState({todos});
+    }
+    toggleAll = (event)=>{
+        let checked = event.target.checked;
+        let todos = this.state.todos;
+        todos = this.state.todos.map(todo => {
+            todo.completed = checked;
+            return todo;
+        })
+        this.setState({todos});
+    }
     render() {
-        let showTodos = this.state.todos.filter(todo => {
+        let todos = this.state.todos;
+        let showTodos = todos.filter(todo => {
             switch (this.state.filter) {
                 case filters.COMPLETED:
                     return todo.completed;
@@ -56,9 +71,23 @@ export default class App extends React.Component {
         let todoItems = showTodos.map((todo, index) => (
             <TodoItem toggle={this.toggle} key={index} todo={todo} delTodo={this.delTodo}/>
         ))
+        let activeTodoCount = todos.reduce((result, todo) => todo.completed ? result : result + 1,0);
+        let completedTodoCount = todos.length - activeTodoCount;
+        let checkAll = (
+            todos.length>0?(
+                <li className="list-group-item">
+                    <input
+                        type="checkbox"
+                        onChange={this.toggleAll}
+                        checked={activeTodoCount === 0}
+                    />{activeTodoCount === 0?'全部取消':'全部选中'}
+                </li>
+            ):null
+        )
         let main = (
             <div className="panel-body">
                 <ul className="list-group">
+                    {checkAll}
                     {todoItems}
                 </ul>
             </div>
@@ -70,7 +99,7 @@ export default class App extends React.Component {
                         <div className="panel panel-default">
                             <TodoHeader title={this.state.newTodo} addTodo={this.addTodo}/>
                             {main}
-                            <TodoFooter changeFilter={this.changeFilter} filter={this.state.filter}/>
+                            <TodoFooter clearCompleted={this.clearCompleted} completedTodoCount={completedTodoCount} activeTodoCount={activeTodoCount} changeFilter={this.changeFilter} filter={this.state.filter}/>
                         </div>
                     </div>
                 </div>
