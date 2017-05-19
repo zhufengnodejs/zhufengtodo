@@ -4,6 +4,8 @@ import * as filters from './filters';
 import TodoHeader from './TodoHeader';
 import TodoItem from './TodoItem';
 import TodoFooter from './TodoFooter';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup' // ES6
+import './App.css';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -42,12 +44,12 @@ export default class App extends React.Component {
     changeFilter = (filter) => {
         this.setState({filter});
     }
-    clearCompleted = ()=>{
+    clearCompleted = () => {
         let todos = this.state.todos;
         todos = this.state.todos.filter(todo => !todo.completed);
         this.setState({todos});
     }
-    toggleAll = (event)=>{
+    toggleAll = (event) => {
         let checked = event.target.checked;
         let todos = this.state.todos;
         todos = this.state.todos.map(todo => {
@@ -56,6 +58,7 @@ export default class App extends React.Component {
         })
         this.setState({todos});
     }
+
     render() {
         let todos = this.state.todos;
         let showTodos = todos.filter(todo => {
@@ -71,24 +74,32 @@ export default class App extends React.Component {
         let todoItems = showTodos.map((todo, index) => (
             <TodoItem toggle={this.toggle} key={index} todo={todo} delTodo={this.delTodo}/>
         ))
-        let activeTodoCount = todos.reduce((result, todo) => todo.completed ? result : result + 1,0);
+        let activeTodoCount = todos.reduce((result, todo) => todo.completed ? result : result + 1, 0);
         let completedTodoCount = todos.length - activeTodoCount;
         let checkAll = (
-            todos.length>0?(
+            todos.length > 0 ? (
                 <li className="list-group-item">
                     <input
                         type="checkbox"
                         onChange={this.toggleAll}
                         checked={activeTodoCount === 0}
-                    />{activeTodoCount === 0?'全部取消':'全部选中'}
+                    />{activeTodoCount === 0 ? '全部取消' : '全部选中'}
                 </li>
-            ):null
+            ) : null
         )
+        
         let main = (
             <div className="panel-body">
                 <ul className="list-group">
                     {checkAll}
-                    {todoItems}
+                    <CSSTransitionGroup
+                        transitionName="todo"
+                        transitionEnter={true}
+                        transitionLeave={true}
+                        transitionEnterTimeout={500}
+                        transitionLeaveTimeout={300}>
+                        {todoItems}
+                    </CSSTransitionGroup>
                 </ul>
             </div>
         )
@@ -99,7 +110,9 @@ export default class App extends React.Component {
                         <div className="panel panel-default">
                             <TodoHeader title={this.state.newTodo} addTodo={this.addTodo}/>
                             {main}
-                            <TodoFooter clearCompleted={this.clearCompleted} completedTodoCount={completedTodoCount} activeTodoCount={activeTodoCount} changeFilter={this.changeFilter} filter={this.state.filter}/>
+                            <TodoFooter clearCompleted={this.clearCompleted} completedTodoCount={completedTodoCount}
+                                        activeTodoCount={activeTodoCount} changeFilter={this.changeFilter}
+                                        filter={this.state.filter}/>
                         </div>
                     </div>
                 </div>

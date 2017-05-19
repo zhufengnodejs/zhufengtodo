@@ -1,0 +1,22 @@
+/*进入*/
+.todo-enter {
+    opacity: 0.01;
+    transition:all 1000ms ease;
+    transform:translate3d(100%,0,0);
+}
+/*进入激活*/
+.todo-enter.todo-enter-active {
+    opacity: 1;
+    transform:translate3d(0,0,0);
+}
+/*离开*/
+.todo-leave {
+    opacity: 1;
+    transition:all 500ms ease;
+    transform:translate3d(0,0,0);
+}
+/*离开激活*/
+.todo-leave.todo-leave-active {
+    opacity: 0.01;
+    transform:translate3d(-100%,0,0);
+}
